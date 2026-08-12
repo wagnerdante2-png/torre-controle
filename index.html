@@ -7,7 +7,7 @@
   <title>Torre de Controle | Operações</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" /><link rel="stylesheet" href="market-mode.css" /><link rel="stylesheet" href="module-evolution.css" /><link rel="stylesheet" href="gauge-dashboard.css" />
+  <link rel="stylesheet" href="styles.css" /><link rel="stylesheet" href="market-mode.css" /><link rel="stylesheet" href="module-evolution.css" /><link rel="stylesheet" href="gauge-dashboard.css" /><link rel="stylesheet" href="macro-dashboard.css" />
 </head>
 <body>
 <div class="app-shell">
@@ -16,6 +16,7 @@
 <div class="live-pill"><span class="pulse"></span> AMBIENTE OPERACIONAL</div>
 <nav id="nav" class="nav">
 <button class="nav-item active" data-view="executive"><span>◫</span><b>Visão Executiva</b></button>
+<button class="nav-item" data-view="macro"><span>◈</span><b>Visão Macro</b></button>
 <button class="nav-item" data-view="compare"><span>⇄</span><b>De: / Para:</b></button>
 <button class="nav-item" data-view="gauges"><span>◔</span><b>Velocímetros</b></button>
 <button class="nav-item" data-view="pdv"><span>⌁</span><b>PDV & Cliente</b></button>
@@ -43,5 +44,5 @@
 <article class="panel span-7"><div class="panel-head"><div><span class="section-kicker">PERFORMANCE COMERCIAL</span><h2>Venda por hora x meta</h2></div><span class="panel-value">R$ 3.842.190</span></div><div class="chart-wrap"><canvas class="line-chart" data-type="sales"></canvas></div><div class="chart-footer"><span><i class="dot cyan"></i> Venda realizada</span><span><i class="dot violet"></i> Meta acumulada</span><b>+5,8% Ano x Ano</b></div></article>
 <article class="panel span-5"><div class="panel-head"><div><span class="section-kicker">ANOMALIAS</span><h2>Radar de atenção imediata</h2></div><button class="ghost">Ver todas</button></div><div class="anomaly-row"><div class="rank redbg">01</div><div><b>ML34 · Campinas</b><span>Falta de caixa recorrente</span></div><strong>CRÍTICO</strong></div><div class="anomaly-row"><div class="rank redbg">02</div><div><b>ML12 · Ribeirão Preto</b><span>Ruptura de itens Curva A</span></div><strong>CRÍTICO</strong></div><div class="anomaly-row"><div class="rank amberbg">03</div><div><b>ML05 · Sorocaba</b><span>Tempo de venda acima do padrão</span></div><strong>ATENÇÃO</strong></div></article>
 </section></template>
-<script src="app.js"></script><script src="market-mode.js"></script><script src="module-evolution.js"></script><script src="gauge-dashboard.js"></script>
+<script src="app.js"></script><script src="market-mode.js"></script><script src="module-evolution.js"></script><script src="gauge-dashboard.js"></script><script src="macro-dashboard.js"></script>
 </body></html>
