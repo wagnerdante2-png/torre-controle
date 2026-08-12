@@ -1,0 +1,28 @@
+const marketViews={
+ compare:{title:'De: / Para:',render:renderCompare}
+};
+Object.assign(views,marketViews);
+function renderCompare(){
+ const rows=[
+ ['ML34','CX-ERR','R$ 1.820','+18,4%','bad'],['ML12','RUP-A','11,4%','+3,1pp','bad'],['ML05','PDV-T','05:12','+22,0%','bad'],['ML26','ACUR','99,7%','+0,8pp','good'],
+ ['REDE','VENDA','R$ 3,84M','+5,8%','good'],['REDE','CLIENT','26.482','+3,1%','good'],['ML49','ABS','9,8%','+2,6pp','bad'],['ML29','INV','99,4%','+0,5pp','good'],
+ ['ML18','TICKET','R$ 151','+4,2%','good'],['ML07','RUP','3,1%','-1,2pp','good'],['ML31','TURN','6,7%','+1,4pp','bad'],['ML42','DESC','1,8%','-0,3pp','good'],
+ ['ML14','SAC','12','-21,0%','good'],['ML55','HE','186h','+16,0%','bad'],['ML03','RECEB','01:21','-18min','good'],['ML22','CANC','7','-31,0%','good']
+ ];
+ const cols=[rows.slice(0,4),rows.slice(4,8),rows.slice(8,12),rows.slice(12,16)];
+ content.innerHTML=`<section class="detail-grid">
+ <div class="detail-header"><div><span class="section-kicker">MODO COMPARATIVO · TRADING DESK</span><h2>Transforme indicador em decisão</h2><p>Leitura conceitual de origem → estado atual → impacto operacional, usando a linguagem visual dos painéis de bolsa.</p></div><div class="legend"><i class="dot green"></i> favorável <i class="dot red"></i> desfavorável</div></div>
+ <article class="market-tape"><div class="market-tape-head"><h2>OPERATIONS EXCHANGE · LIVE BOARD</h2><small>LOJA · INDICADOR · VALOR · VARIAÇÃO</small></div><div class="quote-grid">${cols.map(c=>`<div class="quote-col">${c.map(r=>`<div class="quote-row"><span class="code">${r[0]}</span><span class="neutral">${r[1]}</span><span class="neutral">${r[2]}</span><span class="${r[4]==='good'?'positive':'negative'}">${r[4]==='good'?'▲':'▼'} ${r[3]}</span></div>`).join('')}</div>`).join('')}</div></article>
+ <article class="compare-board">
+  <div class="compare-side from"><div class="compare-label">DE: SINAL ISOLADO</div><h3>“Ruptura: 11,4%”</h3><p>O número sozinho informa que existe um problema. Para a torre, porém, falta contexto: tendência, impacto, causa provável, benchmark e prioridade.</p><div class="compare-metrics"><div class="compare-metric bad"><span>ML12 · RUPTURA</span><b>11,4%</b><small>▲ 3,1 p.p.</small></div><div class="compare-metric"><span>CURVA A</span><b>37 SKUs</b><small>sem disponibilidade</small></div><div class="compare-metric"><span>VENDA PERDIDA</span><b>R$ 18,4k</b><small>estimada hoje</small></div><div class="compare-metric"><span>POSIÇÃO REDE</span><b>59 / 60</b><small>ranking operacional</small></div></div><div class="exchange-chart"><svg viewBox="0 0 400 90" preserveAspectRatio="none"><polyline class="line" points="0,65 40,55 80,63 120,42 160,48 200,34 240,39 280,22 320,28 360,15 400,20"/></svg></div></div>
+  <div class="compare-arrow"><div>→</div></div>
+  <div class="compare-side to"><div class="compare-label">PARA: INTELIGÊNCIA ACIONÁVEL</div><h3>Ruptura crítica com impacto comercial</h3><p>A torre correlaciona sinais e entrega a leitura operacional: onde agir, por que agir e qual dimensão do problema precisa ser atacada primeiro.</p><div class="compare-metrics"><div class="compare-metric bad"><span>SEVERIDADE</span><b>CRÍTICA</b><small>score 91 / 100</small></div><div class="compare-metric good"><span>PRIORIDADE</span><b>#02 REDE</b><small>ação imediata</small></div><div class="compare-metric"><span>CAUSA PROVÁVEL</span><b>Reposição</b><small>recebido, não exposto</small></div><div class="compare-metric"><span>OPORTUNIDADE</span><b>R$ 18,4k</b><small>recuperável / dia</small></div></div><div class="exchange-chart"><svg viewBox="0 0 400 90" preserveAspectRatio="none"><polyline class="line2" points="0,68 40,62 80,55 120,59 160,43 200,47 240,31 280,36 320,20 360,24 400,9"/></svg></div></div>
+ </article>
+ <div class="compare-context"><div class="context-card"><span>DE: TEMPO PDV</span><b>05:12 → pressão de fila</b><small>PARA: cruzar fluxo horário + headcount + caixas ativos + abandono para apontar a janela e a causa.</small></div><div class="context-card"><span>DE: ERRO DE CAIXA</span><b>R$ 1.820 → risco financeiro</b><small>PARA: reincidência + operador + faixa horária + ajustes manuais para separar evento isolado de padrão.</small></div><div class="context-card"><span>DE: ABSENTEÍSMO</span><b>9,8% → impacto operacional</b><small>PARA: função + escala + produtividade + venda/hora para quantificar efeito real na operação.</small></div></div>
+ ${comparisonMatrix()}
+ </section>`;
+}
+function comparisonMatrix(){
+ const data=[['PDV & Cliente','Tempo / cancelamentos','Fila + fluxo + HC + abandono','Pressão operacional'],['Comercial','Venda / ticket / preço','Meta + YoY + ruptura + descontos','Oportunidade / risco'],['Estoque','Ruptura / sem venda','Curva + recebimento + exposição','Venda perdida'],['Inventário','Acuracidade / divergência','Valor + ajustes + recorrência','Risco patrimonial'],['Pessoas','Absenteísmo / turnover','Função + produtividade + HE','Capacidade operacional'],['Financeiro','Falta / sobra / ajustes','Operador + horário + reincidência','Risco financeiro'],['SAC','Reclamações','Categoria + loja + tendência','Experiência / causa raiz']];
+ return `<article class="panel span-12"><div class="panel-head"><div><span class="section-kicker">ARQUITETURA DE LEITURA</span><h2>Como as demais abas evoluem do dado para a decisão</h2></div></div>${table(['ABA','DE: DADO','PARA: CORRELAÇÃO','SAÍDA DA TORRE'],data)}</article>`;
+}
