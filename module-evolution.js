@@ -1,0 +1,44 @@
+const originalPanels={pdv:pdvPanels,commercial:commercialPanels,stock:stockPanels,inventory:inventoryPanels,people:peoplePanels,finance:financePanels,sac:sacPanels};
+function signalBoard(rows){return `<article class="lab-card span-7"><div class="lab-head"><b>LIVE SIGNAL BOARD</b><small>VARIAÇÃO / PRIORIDADE</small></div><div class="signal-board">${rows.map(r=>`<div class="signal-row"><span class="key">${r[0]}</span><span class="desc">${r[1]}</span><span class="val">${r[2]}</span><span class="trend ${r[4]}">${r[3]}</span></div>`).join('')}</div></article>`}
+function ladder(title,rows){return `<article class="lab-card span-5"><div class="lab-head"><b>${title}</b><small>ÍNDICE 0–100</small></div><div class="ladder">${rows.map(r=>`<div class="ladder-row"><span>${r[0]}</span><div class="ladder-track"><i style="width:${r[1]}%"></i></div><b>${r[1]}</b></div>`).join('')}</div></article>`}
+function actionFeed(items){return `<article class="lab-card span-7"><div class="lab-head"><b>FEED DE AÇÕES SUGERIDAS</b><small>CONCEITUAL</small></div><div class="action-feed">${items.map(x=>`<div class="action-item"><span class="time">${x[0]}</span><div><b>${x[1]}</b><span>${x[2]}</span></div><strong>${x[3]}</strong></div>`).join('')}</div></article>`}
+function matrix(title,values){return `<article class="lab-card span-5"><div class="lab-head"><b>${title}</b><small>LOJAS / JANELAS</small></div><div class="matrix"><div class="matrix-grid">${values.map((v,i)=>`<div class="matrix-cell ${v}">${String(i+1).padStart(2,'0')}</div>`).join('')}</div></div></article>`}
+function scenario(title,copy,nodes){return `<article class="lab-card span-8"><div class="lab-head"><b>CENÁRIO / CAUSA PROVÁVEL</b><small>CORRELAÇÃO</small></div><div class="scenario-card"><div class="scenario-title">${title}</div><div class="scenario-copy">${copy}</div><div class="scenario-flow">${nodes.map((n,i)=>`${i?'<span class="scenario-arrow">→</span>':''}<span class="scenario-node ${n[1]||''}">${n[0]}</span>`).join('')}</div></div></article>`}
+function radar(labels,vals){const pts=[];const cx=110,cy=78,R=58;for(let i=0;i<labels.length;i++){const a=-Math.PI/2+i*2*Math.PI/labels.length;const rr=R*vals[i]/100;pts.push(`${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr}`)}const axes=labels.map((l,i)=>{const a=-Math.PI/2+i*2*Math.PI/labels.length;const x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;const lx=cx+Math.cos(a)*(R+18),ly=cy+Math.sin(a)*(R+18);return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" class="radar-grid"/><text x="${lx}" y="${ly}" text-anchor="middle" class="radar-label">${l}</text>`}).join('');return `<article class="lab-card span-4"><div class="lab-head"><b>PERFIL DE PRESSÃO</b><small>MULTIVARIÁVEL</small></div><div class="radar-mini"><svg viewBox="0 0 220 160">${[1,.75,.5,.25].map(s=>{const p=labels.map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/labels.length;return `${cx+Math.cos(a)*R*s},${cy+Math.sin(a)*R*s}`}).join(' ');return `<polygon points="${p}" class="radar-grid"/>`}).join('')}${axes}<polygon points="${pts.join(' ')}" class="radar-shape"/></svg></div></article>`}
+function wrapLab(blocks){return `<section class="ops-lab">${blocks}<div class="ops-footnote">BLOCOS CONCEITUAIS · dados demonstrativos · finalidade definitiva será validada após experimentação visual e operacional.</div></section>`}
+
+pdvPanels=function(){return `${originalPanels.pdv()}${wrapLab(
+ signalBoard([['ML05','Tempo PDV crítico','05:12','▲22%','down'],['ML18','Fila / pico 18h','14 clientes','▲7','down'],['ML26','Self-checkout','01:54','▼11%','up'],['ML34','Cancelamento preço','18','▲38%','down'],['ML07','Produtos/cupom','6,4','▲0,7','up']])+
+ ladder('PRESSÃO DE ATENDIMENTO',[['Fila',84],['PDV',78],['HC disponível',61],['Cancelamento',57],['Abandono',43]])+
+ scenario('Janela crítica 17h–20h em ML05','O painel correlaciona fluxo, tempo de venda, headcount e cancelamentos para transformar "PDV lento" em uma hipótese operacional investigável.',[['Fluxo +31%','bad'],['HC -2 pessoas','bad'],['PDV 05:12','bad'],['Abrir caixa / realocar','good']])+
+ radar(['FLUXO','PDV','HC','CANC','SAC'],[88,82,54,61,47])}`)}`}
+commercialPanels=function(){return `${originalPanels.commercial()}${wrapLab(
+ signalBoard([['REDE','Venda vs meta','+5,8%','▲','up'],['ML12','Venda perdida','R$18,4k','▲12%','down'],['ML03','Ticket médio','R$162','▲9%','up'],['ML31','Desconto','4,8%','▲1,7pp','down'],['ML22','Erro de preço','23','▲44%','down']])+
+ ladder('RISCO COMERCIAL',[['Ruptura A',81],['Erro preço',73],['Desconto',62],['Sem venda',58],['Alteração preço',45]])+
+ scenario('Venda cresce, mas margem operacional entra em atenção','A torre evita celebrar apenas faturamento: compara desconto, erro de preço, ruptura e venda perdida para mostrar qualidade da venda.',[['Venda +5,8%','good'],['Desconto +1,2pp','bad'],['Erro preço +18%','bad'],['Qualidade da venda 67/100','bad']])+
+ radar(['VENDA','TICKET','PREÇO','RUPT','DESC'],[86,72,51,44,58])}`)}`}
+stockPanels=function(){return `${originalPanels.stock()}${wrapLab(
+ signalBoard([['ML12','Ruptura Curva A','11,4%','▲3,1pp','down'],['ML34','Recebimento','02:31','▲29min','down'],['ML03','Liberação venda','00:24','▼12min','up'],['ML49','Sem venda +15d','147','▲18%','down'],['ML26','Reentregas','0','▼2','up']])+
+ ladder('PRESSÃO LOGÍSTICA',[['Ruptura',88],['Recebimento',71],['Sem venda',67],['Reentrega',39],['Liberação',34]])+
+ scenario('Produto recebido, mas não disponível para venda','Bloco conceitual para diferenciar ruptura de abastecimento, atraso de recebimento e falha de reposição/exposição.',[['Recebido 08:42','good'],['Liberado 09:18','good'],['Sem venda 6h','bad'],['Hipótese: exposição','bad']])+
+ radar(['RUPT','RECEB','LIBER','SEM V','REENT'],[91,68,43,76,27])}`)}`}
+inventoryPanels=function(){return `${originalPanels.inventory()}${wrapLab(
+ signalBoard([['ML26','Acuracidade','99,7%','▲0,4pp','up'],['ML12','Divergência','R$18,2k','▲13%','down'],['ML34','Ajustes pós-inv.','13','▲5','down'],['ML29','Acuracidade','99,4%','▲0,2pp','up'],['ML31','Dif. unidades','391','▲17%','down']])+
+ ladder('RISCO DE ACURACIDADE',[['Divergência R$',79],['Ajustes',65],['Recorrência',58],['Unidades',51],['Frequência',32]])+
+ scenario('Acuracidade baixa com ajustes recorrentes','O objetivo é separar um inventário ruim pontual de um padrão persistente de correções e divergências.',[['Acur. 96,8%','bad'],['17 ajustes','bad'],['3 inventários recorrentes','bad'],['Auditoria dirigida','good']])+
+ radar(['ACUR','R$','UNID','AJUST','RECOR'],[42,81,69,74,78])}`)}`}
+peoplePanels=function(){return `${originalPanels.people()}${wrapLab(
+ signalBoard([['ML49','Absenteísmo','9,8%','▲2,6pp','down'],['REDE','Produtividade','R$183/h','▲3,4%','up'],['ML31','Turnover','6,7%','▲1,4pp','down'],['ML18','Hora extra','221h','▲19%','down'],['ML26','HC planejado','101%','▲2%','up']])+
+ ladder('PRESSÃO DE PESSOAS',[['Absenteísmo',82],['Hora extra',74],['Turnover',63],['Cobertura HC',41],['Disciplina',28]])+
+ scenario('Absenteísmo só importa quando afeta capacidade','A torre cruza ausência com função, horário, produtividade e operação. O indicador deixa de ser RH isolado e vira capacidade operacional.',[['Caixa -4 pessoas','bad'],['Pico +26%','bad'],['Produt. -12%','bad'],['Realocação sugerida','good']])+
+ radar(['ABS','TURN','HE','HC','PROD'],[84,61,72,48,54])}`)}`}
+financePanels=function(){return `${originalPanels.finance()}${wrapLab(
+ signalBoard([['ML34','Falta caixa','R$1.820','▲18%','down'],['ML12','Ajustes manuais','9','▲4','down'],['ML26','Erro fechamento','R$110','▼41%','up'],['ML05','Sobras','R$440','▲12%','down'],['REDE','Risco financeiro','41/100','▼3','up']])+
+ ladder('PRESSÃO FINANCEIRA',[['Faltas',86],['Reincidência',77],['Ajustes',65],['Sobras',38],['Exceções',34]])+
+ scenario('Erro de caixa recorrente deixa de ser apenas valor','A correlação por operador, horário, loja e ajuste manual permite distinguir ruído operacional de padrão que merece investigação.',[['R$1.820 falta','bad'],['7 fech. erro','bad'],['12 ajustes','bad'],['Reincidência alta','bad']])+
+ radar(['FALTA','SOBRA','AJUST','RECOR','EXC'],[89,34,69,83,52])}`)}`}
+sacPanels=function(){return `${originalPanels.sac()}${wrapLab(
+ signalBoard([['REDE','Reclamações','148','▼11%','up'],['ML12','Preço divergente','19','▲27%','down'],['ML05','Fila / atendimento','14','▲8','down'],['ML26','Consumo sacolas','-6%','▼','up'],['ML34','Quebra operacional','R$7,4k','▲9%','down']])+
+ ladder('PRESSÃO DE EXPERIÊNCIA',[['Atendimento',73],['Preço',66],['Fila',61],['Indisponível',54],['Troca',28]])+
+ scenario('SAC como sensor da operação','Reclamação deixa de ser somente contagem. A torre cruza categoria com PDV, ruptura, preço e loja para buscar causa operacional.',[['SAC preço +27%','bad'],['Erro preço +18%','bad'],['Canc. preço +22%','bad'],['Auditoria focal','good']])+
+ radar(['ATEND','PREÇO','FILA','RUPT','PERDA'],[69,74,62,58,43])}`)}`}
